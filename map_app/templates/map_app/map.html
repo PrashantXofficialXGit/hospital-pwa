@@ -6,19 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hospital Map</title>
 
-  <!-- Manifest & Icons -->
+  <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="{% static 'manifest.json' %}">
-  <link rel="icon" href="{% static 'icons/icon-192x192.png' %}" type="image/png">
   <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
-
-  <!-- Optional app store icons -->
-  <link rel="icon" href="{% static 'icons/appstore.png' %}" type="image/png">
-  <link rel="icon" href="{% static 'icons/playstore.png' %}" type="image/png">
+  <link rel="icon" href="{% static 'icons/icon-192x192.png' %}" type="image/png">
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="{% static 'map_app/css/style.css' %}">
 
+  <!-- Inline panel styling -->
   <style>
     #filterPanel.hidden { display: none; }
 
@@ -120,7 +117,7 @@
     </div>
   </div>
 
-  <!-- View Toggle Buttons -->
+  <!-- View Toggle -->
   <div id="viewToggle">
     <button id="listViewBtn">List View</button>
     <button id="gridViewBtn">Grid View</button>
@@ -139,7 +136,7 @@
     <div id="routeInfo"></div>
   </div>
 
-  <!-- Leaflet + Routing Scripts -->
+  <!-- Leaflet Scripts -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
   <script src="https://unpkg.com/lrm-openrouteservice/dist/lrm-openrouteservice.min.js"></script>
@@ -147,7 +144,7 @@
   <!-- Custom JS -->
   <script src="{% static 'map_app/js/map.js' %}"></script>
 
-  <!-- UI Scripts -->
+  <!-- UI Logic & PWA -->
   <script>
     function toggleFilterPanel() {
       document.getElementById('filterPanel').classList.toggle('hidden');
