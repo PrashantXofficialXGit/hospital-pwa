@@ -1,0 +1,353 @@
+/* Full screen map */
+#map {
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Floating search bar */
+#search-bar {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#locationInput {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px;
+}
+
+#search-bar button {
+  padding: 8px 14px;
+  font-size: 16px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#search-bar button:hover {
+  background-color: #357ae8;
+}
+
+/* Routing Panel */
+/* Force routing container to bottom center */
+/* Ensures the routing control stays at the bottom center */
+.leaflet-routing-container {
+  position: absolute !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 1000 !important;
+}
+
+.leaflet-top.leaflet-right {
+  right: auto;
+  left: 10px;
+}
+
+#close-routing {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+}
+
+#close-routing:hover {
+  color: red;
+}
+
+/* Filter panel */
+#filterPanel {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  background: white;
+  height: calc(100vh); /* Full height minus search bar */
+  padding: 20px;
+  z-index: 1000;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  width: 220px;
+  transition: transform 0.3s ease;
+}
+
+#filterPanel.hidden {
+  transform: translateX(-100%); /* Hides the filter panel */
+}
+
+#filterPanel h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+#typeFilter {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.filter-item {
+  margin-bottom: 15px;
+}
+
+.filter-item label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.filter-item select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.filter-item button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.filter-item button:hover {
+  background-color: #357ae8;
+}
+
+/* Toggle Button Container */
+#viewToggle {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  z-index: 1001;
+}
+
+#viewToggle button {
+  padding: 8px 14px;
+  margin: 5px 5px 0 0;
+  font-size: 14px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#viewToggle button:hover {
+  background-color: #3367d6;
+}
+
+/* Floating hospital panel (main container) */
+#hospitalPanel {
+  position: absolute;
+  top: 0px; /* below search bar */
+  left: 280px; /* leaves room for filter panel */
+  right: 10px;
+  bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#hospitalPanel.active {
+  display: block;
+}
+
+/* View toggle inside hospital panel */
+#viewToggleBtn {
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 8px 16px;
+  background-color: #4285f4;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#viewToggleBtn:hover {
+  background-color: #3367d6;
+}
+
+/* Unified hospital list styles */
+#hospitalList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: all 0.3s ease-in-out;
+}
+
+/* List View Style */
+#hospitalList.list-view .hospital-tile {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Grid View Style (updated to fill horizontal and vertical space) */
+#hospitalList.grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  min-height: 150vh; /* Adjust height of the grid */
+  overflow-y: auto;
+}
+
+/* Hospital Card / Tile */
+.hospital-tile {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;  /* Ensure tile fills the grid space */
+  text-align: left;
+  transition: all 0.2s ease-in-out;
+}
+
+.hospital-tile:hover {
+  transform: translateY(-2px);
+  background-color: #f0f8ff;
+}
+
+.hospital-tile button {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.hospital-tile button:hover {
+  background-color: #45a049;
+}
+
+/* Close button for filter panel */
+#closeFilterBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+#closeFilterBtn:hover {
+  color: #f44336;
+}
+
+/* Style for the "Show Filters" button (floating on the map) */
+#toggleFilterBtn {
+  position: absolute;
+  top: 20px; /* Distance from the top of the map */
+  left: 20px; /* Distance from the left of the map */
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1002; /* Ensure the button is above the map */
+}
+
+#toggleFilterBtn:hover {
+  background-color: #357ae8;
+}
+
+/* Search Bar Styling */
+#search-bar {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#locationInput {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px;
+}
+
+#search-btn, #list-btn, #navigation-btn {
+  padding: 8px 14px;
+  font-size: 16px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#search-btn:hover, #list-btn:hover, #navigation-btn:hover {
+  background-color: #357ae8;
+}
+
+.nav-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  padding: 20px;
+  z-index: 1001;
+  display: none; /* Start hidden */
+}
+
+.nav-panel.active {
+  display: block;
+}

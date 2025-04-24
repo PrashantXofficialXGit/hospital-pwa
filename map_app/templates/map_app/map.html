@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Map</title>
+
+  <!-- Manifest & Icons -->
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <link rel="icon" href="{% static 'icons/icon-192x192.png' %}" type="image/png">
+  <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
+
+  <!-- Optional app store icons -->
+  <link rel="icon" href="{% static 'icons/appstore.png' %}" type="image/png">
+  <link rel="icon" href="{% static 'icons/playstore.png' %}" type="image/png">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="{% static 'map_app/css/style.css' %}">
+
+  <style>
+    #filterPanel.hidden { display: none; }
+
+    .nav-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      transition: right 0.3s ease-in-out;
+      z-index: 1001;
+      padding: 20px;
+    }
+
+    .nav-panel.active { right: 0; }
+    .nav-panel h3 { margin-top: 0; }
+
+    .nav-panel input,
+    .nav-panel button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Search bar -->
+  <div id="search-bar">
+    <input type="text" id="locationInput" placeholder="Search location (e.g., Delhi)" />
+    <button id="searchBtn">Map</button>
+    <button id="listBtn">List</button>
+    <button id="openNavPanelBtn">Navigation</button>
+  </div>
+
+  <!-- Map container -->
+  <div id="map"></div>
+  <button id="toggleFilterBtn" onclick="toggleFilterPanel()">Show Filters</button>
+
+  <!-- Filters Panel -->
+  <div id="filterPanel" class="hidden">
+    <h4>Filters</h4>
+    <button class="close-filter-btn" onclick="toggleFilterPanel()">×</button>
+
+    <div class="filter-item">
+      <label for="amenityType">Amenity Type</label>
+      <select id="amenityType">
+        <option value="hospital">Hospital</option>
+        <option value="clinic">Clinic</option>
+        <option value="doctors">Doctor</option>
+        <option value="pharmacy">Pharmacy</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label for="radius">Radius</label>
+      <select id="radius">
+        <option value="1000">1 km</option>
+        <option value="3000">3 km</option>
+        <option value="5000" selected>5 km</option>
+        <option value="10000">10 km</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label for="hospitalTypeFilter">Hospital Type</label>
+      <select id="hospitalTypeFilter">
+        <option value="All">All</option>
+        <option value="General">General</option>
+        <option value="Specialized">Specialized</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label for="doctorDomainFilter">Doctor's Domain</label>
+      <select id="doctorDomainFilter">
+        <option value="All">All</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Orthopedics">Orthopedics</option>
+        <option value="Pediatrics">Pediatrics</option>
+        <option value="Neurology">Neurology</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label for="availabilityFilter">Availability</label>
+      <select id="availabilityFilter">
+        <option value="All">All</option>
+        <option value="Available">Available</option>
+        <option value="Not Available">Not Available</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+  </div>
+
+  <!-- View Toggle Buttons -->
+  <div id="viewToggle">
+    <button id="listViewBtn">List View</button>
+    <button id="gridViewBtn">Grid View</button>
+  </div>
+
+  <!-- Hospital Panel -->
+  <div id="hospitalPanel">
+    <ul id="hospitalList" class="list-view"></ul>
+  </div>
+
+  <!-- Navigation Panel -->
+  <div id="navPanel" class="nav-panel">
+    <h3>Navigation</h3>
+    <input type="text" id="destinationInput" placeholder="Enter destination..." />
+    <button id="goRouteBtn">Go</button>
+    <div id="routeInfo"></div>
+  </div>
+
+  <!-- Leaflet + Routing Scripts -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+  <script src="https://unpkg.com/lrm-openrouteservice/dist/lrm-openrouteservice.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="{% static 'map_app/js/map.js' %}"></script>
+
+  <!-- UI Scripts -->
+  <script>
+    function toggleFilterPanel() {
+      document.getElementById('filterPanel').classList.toggle('hidden');
+    }
+
+    document.getElementById("openNavPanelBtn").addEventListener("click", () => {
+      document.getElementById("navPanel").classList.toggle("active");
+    });
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register("{% static 'service-worker.js' %}")
+        .then(reg => console.log("✅ Service Worker registered", reg))
+        .catch(err => console.warn("❌ Service Worker registration failed", err));
+    }
+  </script>
+
+</body>
+</html>
