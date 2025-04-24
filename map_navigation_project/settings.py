@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-pn*&!c5$au&nd=r@f^q!lj^&g=rtce04)x3(%s^nu@ajjpqr$%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hospital-pwa.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
