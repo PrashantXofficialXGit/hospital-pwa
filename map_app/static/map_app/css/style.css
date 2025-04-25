@@ -1,6 +1,6 @@
 /* Full screen map */
 #map {
-  height: 100vh;
+  height: 500vh;
   width: 100%;
   z-index: 1;
 }
